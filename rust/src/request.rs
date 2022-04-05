@@ -1,38 +1,21 @@
 use std::{fmt::Display, time::Duration};
 
 use reqwest::{
-    header::{HeaderMap, HeaderValue, InvalidHeaderValue},
+    header::{HeaderMap, HeaderValue},
     Client, ClientBuilder,
 };
 use serde::Serialize;
 
-pub enum VioletRequestErrors {
-    InvalidHeaderValue(InvalidHeaderValue),
-    CreateClientError(reqwest::Error),
-    InvalidUrl,
-    FailedToSendRequest(u16),
-}
-
-impl From<InvalidHeaderValue> for VioletRequestErrors {
-    fn from(err: InvalidHeaderValue) -> Self {
-        VioletRequestErrors::InvalidHeaderValue(err)
-    }
-}
-
-impl From<reqwest::Error> for VioletRequestErrors {
-    fn from(err: reqwest::Error) -> Self {
-        VioletRequestErrors::CreateClientError(err)
-    }
-}
+use crate::erros::VioletRequestErrors;
 
 #[derive(Serialize, Debug)]
-pub struct VioletLogData<'a> {
-    pub error_level: &'a str,
-    pub message: &'a str,
-    pub stack_trace: &'a str,
+pub(crate) struct VioletLogData {
+    pub error_level: String,
+    pub message: String,
+    pub stack_trace: String,
 }
 
-impl<'a> Display for VioletLogData<'a> {
+impl Display for VioletLogData {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
@@ -42,7 +25,7 @@ impl<'a> Display for VioletLogData<'a> {
     }
 }
 
-pub struct VioletRequest {
+pub(crate) struct VioletRequest {
     reqwest_client: Client,
     base_url: String,
 }
@@ -71,10 +54,7 @@ impl VioletRequest {
         Ok(violet)
     }
 
-    pub async fn send_log<'a>(
-        &self,
-        log_data: &VioletLogData<'a>,
-    ) -> Result<(), VioletRequestErrors> {
+    pub async fn send_log(&self, log_data: VioletLogData) -> Result<(), VioletRequestErrors> {
         let url = format!("{}/errors", &self.base_url);
         let mut limit = 5;
 
@@ -82,7 +62,7 @@ impl VioletRequest {
             let response = self
                 .reqwest_client
                 .post(&url)
-                .json(log_data)
+                .json(&log_data)
                 .send()
                 .await
                 .map_err(|err| {
