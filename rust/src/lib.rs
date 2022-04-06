@@ -4,7 +4,7 @@ use request::{VioletLogData, VioletRequest};
 
 pub mod erros;
 mod macros;
-pub(crate) mod request;
+pub mod request;
 
 static CATTLEYA_STATE: OnceCell<CattleyaState> = OnceCell::new();
 

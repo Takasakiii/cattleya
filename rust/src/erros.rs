@@ -1,8 +1,10 @@
+use std::fmt::Display;
+
 use reqwest::header::InvalidHeaderValue;
 
 use crate::CattleyaState;
 
-pub(crate) enum VioletRequestErrors {
+pub enum VioletRequestErrors {
     InvalidHeaderValue(InvalidHeaderValue),
     CreateClientError(reqwest::Error),
     InvalidUrl,
@@ -18,6 +20,21 @@ impl From<InvalidHeaderValue> for VioletRequestErrors {
 impl From<reqwest::Error> for VioletRequestErrors {
     fn from(err: reqwest::Error) -> Self {
         VioletRequestErrors::CreateClientError(err)
+    }
+}
+
+impl Display for VioletRequestErrors {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            VioletRequestErrors::InvalidHeaderValue(err) => {
+                write!(f, "InvalidHeaderValue: {}", err)
+            }
+            VioletRequestErrors::CreateClientError(err) => write!(f, "CreateClientError: {}", err),
+            VioletRequestErrors::InvalidUrl => write!(f, "InvalidURL"),
+            VioletRequestErrors::FailedToSendRequest(status) => {
+                write!(f, "Failed to send request with status code {}", status)
+            }
+        }
     }
 }
 

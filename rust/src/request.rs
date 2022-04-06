@@ -9,7 +9,7 @@ use serde::Serialize;
 use crate::erros::VioletRequestErrors;
 
 #[derive(Serialize, Debug)]
-pub(crate) struct VioletLogData {
+pub struct VioletLogData {
     pub error_level: String,
     pub message: String,
     pub stack_trace: String,
@@ -25,7 +25,7 @@ impl Display for VioletLogData {
     }
 }
 
-pub(crate) struct VioletRequest {
+pub struct VioletRequest {
     reqwest_client: Client,
     base_url: String,
 }
