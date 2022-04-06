@@ -12,12 +12,8 @@ pub(self) struct CattleyaState {
     violet_request: VioletRequest,
 }
 
-pub fn init_cattleya(
-    base_url: String,
-    token: &str,
-    timeout: Option<u64>,
-) -> Result<(), CattleyaInitError> {
-    let client = VioletRequest::new(token, base_url, timeout)?;
+pub fn init_cattleya(base_url: String, token: &str) -> Result<(), CattleyaInitError> {
+    let client = VioletRequest::new(token, base_url)?;
     CATTLEYA_STATE.set(CattleyaState {
         violet_request: client,
     })?;

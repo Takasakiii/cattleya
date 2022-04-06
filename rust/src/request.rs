@@ -1,4 +1,4 @@
-use std::{fmt::Display, time::Duration};
+use std::fmt::Display;
 
 use reqwest::{
     header::{HeaderMap, HeaderValue},
@@ -31,20 +31,12 @@ pub(crate) struct VioletRequest {
 }
 
 impl VioletRequest {
-    pub fn new(
-        token: &str,
-        base_url: String,
-        custom_timeout: Option<u64>,
-    ) -> Result<Self, VioletRequestErrors> {
+    pub fn new(token: &str, base_url: String) -> Result<Self, VioletRequestErrors> {
         let mut headers = HeaderMap::new();
         headers.insert("Content-Type", HeaderValue::from_static("application/json"));
         headers.insert("Authentication", HeaderValue::from_str(token)?);
 
-        let client = ClientBuilder::new()
-            .default_headers(headers)
-            .user_agent("cattleya")
-            .timeout(Duration::from_millis(custom_timeout.unwrap_or(30000)))
-            .build()?;
+        let client = ClientBuilder::new().default_headers(headers).build()?;
 
         let violet = Self {
             base_url,
