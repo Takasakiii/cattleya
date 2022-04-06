@@ -12,41 +12,41 @@ macro_rules! custom_err {
 #[macro_export]
 macro_rules! severe {
     ($($arg:tt)+) => {
-        custom_err!("Severe", $($arg)+)
+        $crate::custom_err!("Severe", $($arg)+)
     };
 }
 
 #[macro_export]
 macro_rules! error {
     ($($arg:tt)+) => {
-        custom_err!("Error", $($arg)+)
+        $crate::custom_err!("Error", $($arg)+)
     };
 }
 
 #[macro_export]
 macro_rules! warning {
     ($($arg:tt)+) => {
-        custom_err!("Warning", $($arg)+)
+        $crate::custom_err!("Warning", $($arg)+)
     };
 }
 
 #[macro_export]
 macro_rules! info {
     ($($arg:tt)+) => {
-        custom_err!("Info", $($arg)+)
+        $crate::custom_err!("Info", $($arg)+)
     };
 }
 
 #[macro_export]
 macro_rules! verbose {
     ($($arg:tt)+) => {
-        custom_err!("Verbose", $($arg)+)
+        $crate::custom_err!("Verbose", $($arg)+)
     };
 }
 
 #[macro_export]
 macro_rules! debug {
     ($($arg:tt)+) => {
-        custom_err!("Debug", $($arg)+)
+        $crate::custom_err!("Debug", $($arg)+)
     };
 }
