@@ -4,6 +4,7 @@ use reqwest::header::InvalidHeaderValue;
 
 use crate::CattleyaState;
 
+#[derive(Debug)]
 pub enum VioletRequestErrors {
     InvalidHeaderValue(InvalidHeaderValue),
     CreateClientError(reqwest::Error),
@@ -38,6 +39,7 @@ impl Display for VioletRequestErrors {
     }
 }
 
+#[derive(Debug)]
 pub enum CattleyaInitError {
     BaseUrlInvalid,
     Unspecified(String),
