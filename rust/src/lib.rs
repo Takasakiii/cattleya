@@ -30,7 +30,7 @@ async fn emit_log_base(level: String, message: String, target: String) {
 
     let state = CATTLEYA_STATE
         .get()
-        .expect("Cattleya not initialized, use cattleya_rs::init_cattleya");
+        .expect("Cattleya not initialized, use cattleya::init_cattleya");
 
     state.violet_request.send_log(log_data).await.ok();
 }
