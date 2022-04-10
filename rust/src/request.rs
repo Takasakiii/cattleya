@@ -34,7 +34,7 @@ impl VioletRequest {
     pub fn new(token: &str, base_url: String) -> Result<Self, VioletRequestErrors> {
         let mut headers = HeaderMap::new();
         headers.insert("Content-Type", HeaderValue::from_static("application/json"));
-        headers.insert("Authentication", HeaderValue::from_str(token)?);
+        headers.insert("Authorization", HeaderValue::from_str(token)?);
 
         let client = ClientBuilder::new().default_headers(headers).build()?;
 
@@ -58,14 +58,14 @@ impl VioletRequest {
                 .send()
                 .await
                 .map_err(|err| {
-                    log::error!("{}", err);
+                    log::error!("HTTP CLIENT ERR: {}", err);
                     VioletRequestErrors::InvalidUrl
                 })?;
 
             match response.status().as_u16() {
                 201 => break Ok(()),
                 err if limit > 0 => {
-                    log::error!("{}", err);
+                    log::error!("HTTP RESPONSE ERR: {}", err);
                 }
                 err => {
                     log::error!("Original Error: {}\n\nRequest Error: {}", log_data, err);
