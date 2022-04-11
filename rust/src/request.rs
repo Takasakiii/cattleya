@@ -12,7 +12,7 @@ use crate::erros::VioletRequestErrors;
 pub struct VioletLogData {
     pub error_level: String,
     pub message: String,
-    pub stack_trace: String,
+    pub stack_trace: Option<String>,
 }
 
 impl Display for VioletLogData {
@@ -34,7 +34,7 @@ impl VioletRequest {
     pub fn new(token: &str, base_url: String) -> Result<Self, VioletRequestErrors> {
         let mut headers = HeaderMap::new();
         headers.insert("Content-Type", HeaderValue::from_static("application/json"));
-        headers.insert("Authorization", HeaderValue::from_str(token)?);
+        headers.insert("authorization", HeaderValue::from_str(token)?);
 
         let client = ClientBuilder::new().default_headers(headers).build()?;
 
