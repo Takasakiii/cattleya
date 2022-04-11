@@ -25,7 +25,7 @@ async fn emit_log_base(level: String, message: String, target: String) {
     let log_data = VioletLogData {
         error_level: level,
         message,
-        stack_trace: target,
+        stack_trace: Some(target),
     };
 
     let state = CATTLEYA_STATE
